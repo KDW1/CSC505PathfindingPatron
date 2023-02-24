@@ -5,6 +5,7 @@ public class Main {
         //credit for JFrame code is from RyiShow
         //https://youtu.be/om59cwR7psI
         JFrame window = new JFrame();
+        
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false);
 
