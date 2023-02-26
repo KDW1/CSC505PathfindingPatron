@@ -1,3 +1,5 @@
+package pathfinding;
+
 import java.util.ArrayList;
 
 public class Astar {

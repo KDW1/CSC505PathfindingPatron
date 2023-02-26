@@ -1,3 +1,5 @@
+package pathfinding;
+
 public class Coordinate {
     Coordinate parent;
     int[] position = new int[2];
