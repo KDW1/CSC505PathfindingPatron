@@ -3,20 +3,28 @@ package pathfinding;
 import java.util.ArrayList;
 
 public class Astar {
+    int[] obstacles;
+    public Astar(int[] obstacles) {
+        this.obstacles = obstacles;
+    }
     public ArrayList<Coordinate> astar(int[][] maze, int[] start, int[] end) {
-        if(start[0] < 0 || start[0] > maze[0].length - 1) {
+        if(start[0] < 0 || start[0] > maze.length - 1) {
+            System.out.println("Out of bounds x1");
             //Out of bounds for x distance
             return null;
         }
-        if(start[1] < 0 || start[1] > maze.length - 1) {
+        if(start[1] < 0 || start[1] > maze[0].length - 1) {
+            System.out.println("Out of bounds y1");
             //Out of bounds for y distance
             return null;
         }
-        if(end[0] < 0 || end[0] > maze[0].length - 1) {
+        if(end[0] < 0 || end[0] > maze.length - 1) {
+            System.out.println("Out of bounds x2");
             //Out of bounds for x distance
             return null;
         }
-        if(end[1] < 0 || end[1] > maze.length - 1) {
+        if(end[1] < 0 || end[1] > maze[0].length - 1) {
+            System.out.println("Out of bounds y2");
             //Out of bounds for y distance
             return null;
         }
@@ -51,7 +59,7 @@ public class Astar {
                 return path;
             }
 
-            int[][] adjacent = {{1,0},{0,1},{-1,0},{0,-1},{1,1},{-1,1},{1,-1},{-1,1}}; //This is all8 adjacent squeares
+            int[][] adjacent = {{1,0},{0,1},{-1,0},{0,-1},{1,1},{-1,1},{1,-1},{-1,-1}}; //This is all8 adjacent squeares
 
             ArrayList<Coordinate> children = new ArrayList<Coordinate>();
             for(int[] adj : adjacent) {
@@ -63,8 +71,16 @@ public class Astar {
                     continue;
                 }
 
-                if(maze[newPos[0]][newPos[1]] == 1) {
-                    //Check if its valid place to go...
+                boolean canProgress = true;
+
+                for(int ob : obstacles) {
+                    if(maze[newPos[0]][newPos[1]] == ob) {
+                        //Check if its valid place to go...
+                        canProgress = false;
+                    }
+                }
+
+                if(canProgress == false) {
                     continue;
                 }
 

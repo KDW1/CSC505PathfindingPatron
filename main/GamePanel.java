@@ -47,8 +47,10 @@ public class GamePanel extends JPanel implements Runnable {
     int playerSpeed = 10;
 
     long movementDelay = 1000;
-    float movement = 0;
     boolean canMove = true;
+
+    ArrayList<Coordinate> path = new ArrayList<Coordinate>();
+    int currentNum = 0;
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -70,13 +72,14 @@ public class GamePanel extends JPanel implements Runnable {
         long current;
         long last = System.nanoTime();
         double delta = 0;
+        float movement = 0;
         long timer = 0;
         int drawCount = 0;
 
         while(gameThread != null) {
 
             current = System.nanoTime();
-
+            // System.out.println(current);
             movement += (current - last) / drawInterval;
             delta += (current - last) / drawInterval; //If 1 second has passed update and repaint. Basically
             //checks if 1*10^9 nanoseconds has passed
@@ -84,10 +87,20 @@ public class GamePanel extends JPanel implements Runnable {
             last = current;
 
             if(delta >= 1) {
+                System.out.println("Triggered");
                 update();
                 repaint();
                 delta--;
                 drawCount++;
+            }
+
+            if(movement >= 2) {
+                System.out.println("Triggered");
+                currentNum++;
+                currentNum = currentNum % path.size();
+                playerX = path.get(currentNum).position[1] * tileSize;
+                playerY = path.get(currentNum).position[0] * tileSize;
+                movement = 0;
             }
 
             if(timer >= 1000000000) {
@@ -96,6 +109,7 @@ public class GamePanel extends JPanel implements Runnable {
                 timer = 0;
             }
         }
+        System.out.println("what the heck");
     }
 
     public void update() {
@@ -123,17 +137,26 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
         tileM.draw(g2);
-        Astar alg = new Astar();
-        int[] startCoord = {0, 0};
-        int[][] map = tileM.mapTileNum;
-        int[] endCoord = {0,11};
-        ArrayList<Coordinate> path = alg.astar(tileM.mapTileNum, startCoord, endCoord);
-        System.out.println(alg.printPath(path));
+        System.out.println(path.size());
+        if(path.size() == 0) {
+            System.out.println("Algorithms");
+            Astar alg = new Astar(new int[]{1, 2, 3});
+            int[] startCoord = {0, 0};
+            int[][] map = tileM.mapTileNum; //Rows y Columns
+            int[] endCoord = {maxScreenRow-1,maxScreenCol-1};
+            path = alg.astar(tileM.mapTileNum, startCoord, endCoord);
+            path.add(new Coordinate(null, new int[]{0, 0}));
+        }
+        for(Coordinate c : path) {
+            g2.setColor(Color.red);
+            g2.fillRect(c.position[1] * tileSize, c.position[0] * tileSize, tileSize, tileSize); 
+            //Columns represent x values while rows are y values
+        }
+        g2.setColor(Color.white);
+        g2.fillOval(playerX, playerY, tileSize, tileSize); 
+        g2.dispose();
         // System.out.println("First tile collides: " + tileM.tile[0].collision);
         // System.out.println("Tile Size: " + tileM.gp.tileSize);
-        g2.setColor(Color.white);
-        g2.fillRect(playerX, playerY, tileSize, tileSize); 
-        g2.dispose();
     }
 
 }

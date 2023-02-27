@@ -2,7 +2,7 @@ package pathfinding;
 
 public class Coordinate {
     Coordinate parent;
-    int[] position = new int[2];
+    public int[] position = new int[2];
     int g;
     double h;
     double f;
