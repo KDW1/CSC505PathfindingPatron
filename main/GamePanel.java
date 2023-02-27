@@ -144,7 +144,6 @@ public class GamePanel extends JPanel implements Runnable {
             System.out.println("Algorithms");
             Astar alg = new Astar(new int[]{1, 2, 3});
             int[] startCoord = {0, 0};
-            int[][] map = tileM.mapTileNum; //Rows y Columns
             int[] endCoord = {maxScreenRow-1,maxScreenCol-1};
             path = alg.astar(tileM.mapTileNum, startCoord, endCoord);
             path.add(new Coordinate(null, new int[]{0, 0}));
