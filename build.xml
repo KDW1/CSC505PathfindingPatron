@@ -1,10 +1,10 @@
 <project default="compile">
     <target name="compile">
         <mkdir dir="bin"/>
-        <javac srcdir="tile" destdir="bin"/>
         <javac srcdir="pathfinding" destdir="bin"/>
-        <javac srcdir="entity" destdir="bin"/>
+        <javac srcdir="tile" destdir="bin"/>
         <javac srcdir="main" destdir="bin"/>
+        <javac srcdir="entity" destdir="bin"/>
         <javac srcdir="." destdir="."/>
     </target>
     <target name="run" depends="compile">
