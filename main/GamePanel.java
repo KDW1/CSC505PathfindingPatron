@@ -87,24 +87,26 @@ public class GamePanel extends JPanel implements Runnable {
             last = current;
 
             if(delta >= 1) {
-                System.out.println("Triggered");
+                System.out.println("hi");
                 update();
                 repaint();
                 delta--;
                 drawCount++;
             }
 
-            if(movement >= 2) {
+            if(movement >= 8) {
                 System.out.println("Triggered");
-                currentNum++;
-                currentNum = currentNum % path.size();
-                playerX = path.get(currentNum).position[1] * tileSize;
-                playerY = path.get(currentNum).position[0] * tileSize;
-                movement = 0;
+                if(path.size() != 0) {
+                    currentNum++;
+                    currentNum = currentNum % path.size();
+                    playerX = path.get(path.size()-1-currentNum).position[1] * tileSize;
+                    playerY = path.get(path.size()-1-currentNum).position[0] * tileSize;
+                    movement = 0;
+                }
             }
 
             if(timer >= 1000000000) {
-                // System.out.println("FPS: " + drawCount);
+                System.out.println("FPS: " + drawCount);
                 drawCount = 0;
                 timer = 0;
             }
@@ -148,7 +150,8 @@ public class GamePanel extends JPanel implements Runnable {
             path.add(new Coordinate(null, new int[]{0, 0}));
         }
         for(Coordinate c : path) {
-            g2.setColor(Color.red);
+            Color ourColor = new Color(255, 0, 0, 80);
+            g2.setColor(ourColor);
             g2.fillRect(c.position[1] * tileSize, c.position[0] * tileSize, tileSize, tileSize); 
             //Columns represent x values while rows are y values
         }
