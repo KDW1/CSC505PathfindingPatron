@@ -3,7 +3,7 @@ package pathfinding;
 import java.util.ArrayList;
 
 public class Astar {
-    public static ArrayList<Coordinate> astar(int[][] maze, int[] start, int[] end) {
+    public ArrayList<Coordinate> astar(int[][] maze, int[] start, int[] end) {
         if(start[0] < 0 || start[0] > maze[0].length - 1) {
             //Out of bounds for x distance
             return null;
@@ -95,6 +95,17 @@ public class Astar {
         }
         
         return null;
+    }
+
+    public String printPath(ArrayList<Coordinate> coords) {
+        if(coords == null)  {
+            return "No Path";
+        }
+        String msg = "";
+        for(int i = coords.size()-1; i > -1; i--) {
+            msg += "{" + coords.get(i).position[0] + "," + coords.get(i).position[1] +"}" + " ";
+        }
+        return msg;
     }
 }
                                                                                                                              

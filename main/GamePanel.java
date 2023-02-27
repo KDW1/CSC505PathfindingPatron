@@ -5,7 +5,11 @@ package main;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-import tile.TileManager;
+import pathfinding.Astar;
+import pathfinding.Coordinate;
+import tile.*;
+
+import java.util.ArrayList;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -38,8 +42,8 @@ public class GamePanel extends JPanel implements Runnable {
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
 
-    int playerX = 100;
-    int playerY = 100;
+    int playerX = 0;
+    int playerY = 0;
     int playerSpeed = 10;
 
     long movementDelay = 1000;
@@ -87,7 +91,7 @@ public class GamePanel extends JPanel implements Runnable {
             }
 
             if(timer >= 1000000000) {
-                System.out.println("FPS: " + drawCount);
+                // System.out.println("FPS: " + drawCount);
                 drawCount = 0;
                 timer = 0;
             }
@@ -95,36 +99,36 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
-        if(keyH.upPressed) {
-            playerY -= playerSpeed;
-            canMove = false;
-        }
-        if(keyH.downPressed) {
-            playerY += playerSpeed;
-            canMove = false;
-        }
-        if(keyH.rightPressed) {
-            playerX += playerSpeed;
-            canMove = false;
-        }
-        if(keyH.leftPressed) {
-            playerX -= playerSpeed;
-            canMove = false;
-        }
-        canMove = true;
+        // if(keyH.upPressed) {
+        //     playerY -= playerSpeed;
+        //     canMove = false;
+        // }
+        // if(keyH.downPressed) {
+        //     playerY += playerSpeed;
+        //     canMove = false;
+        // }
+        // if(keyH.rightPressed) {
+        //     playerX += playerSpeed;
+        //     canMove = false;
+        // }
+        // if(keyH.leftPressed) {
+        //     playerX -= playerSpeed;
+        //     canMove = false;
+        // }
+        // canMove = true;
     }
 
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
-        try {
-            BufferedImage img = ImageIO.read(new File("./tile/tiles/Grass.png"));
-            g2.drawImage(tileM.tile[0].image, 0, 0, this.tileSize, this.tileSize, null);
-        } catch (Exception e) {
-            // TODO: handle exception
-        }
         tileM.draw(g2);
+        Astar alg = new Astar();
+        int[] startCoord = {0, 0};
+        int[][] map = tileM.mapTileNum;
+        int[] endCoord = {0,11};
+        ArrayList<Coordinate> path = alg.astar(tileM.mapTileNum, startCoord, endCoord);
+        System.out.println(alg.printPath(path));
         // System.out.println("First tile collides: " + tileM.tile[0].collision);
         // System.out.println("Tile Size: " + tileM.gp.tileSize);
         g2.setColor(Color.white);

@@ -7,22 +7,22 @@ import main.GamePanel;
 
 import java.awt.Graphics2D;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Scanner;
+import pathfinding.*;
 
 public class TileManager {
     
     public GamePanel gp;
     public Tile[] tile;
-    String[] tilePaths = {
-        "/tile/tiles/Grass.png",
+    public String[] tilePaths = new String[]{
+        "/tiles/grass.png",
         // "/tiles/water.png",
-        // "/tiles/stone.png"
+        "/tiles/stone.png"
     };
-    int mapTileNum[][];
-    int currentNum = 0;
+    public int[][] mapTileNum;
+    public int currentNum = 0;
+    ArrayList<Coordinate> path;
 
     public TileManager(GamePanel gp) {
 
@@ -37,55 +37,6 @@ public class TileManager {
 
         this.loadMap(currentNum);
 
-    }
-
-    public void getTileImage() {
-        String current = System.getProperty("user.dir");
-        try {
-            for(int i = 0; i < tilePaths.length; i++) {
-                tile[i] = new Tile();
-                tile[i].image = ImageIO.read(new File(current + tilePaths[i]));;
-            }
-            // for(int i = 0; i < tile.length; i++) {
-            //     tile[i] = new Tile();
-            //     tile[i].image = ImageIO.read(new File(tilePaths[i]));
-            // }
-        } catch (Exception e) {
-            System.out.println("");
-            e.printStackTrace();
-            // System.out.println(e.getStackTrace());
-            // TODO: handle exception
-        }
-    }
-
-    public void loadMap(int number) {
-        try {
-            String current = System.getProperty("user.dir");
-            InputStream is = new FileInputStream(new File(current + "/levels/level" + number + ".txt"));
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-
-            int col = 0;
-            int row = 0;
-
-            while(col < gp.maxScreenCol && row < gp.maxScreenRow) {
-                String line = br.readLine();
-
-                while(col < gp.maxScreenCol) {
-                    String numbers[] = line.split(" ");
-                    int num = Integer.parseInt(numbers[col]);
-                    mapTileNum[col][row] = num;
-                    col++;
-                }
-                if(col == gp.maxScreenCol) {
-                    row++;
-                    col = 0;
-                }
-            }
-
-            br.close();
-        } catch (Exception e) {
-            // TODO: handle exception
-        }
     }
 
     public void draw(Graphics2D g2) {
@@ -107,6 +58,63 @@ public class TileManager {
                 x = 0;
                 y += gp.tileSize;
             }
+        }
+    }
+
+
+    public void getTileImage() {
+        String current = System.getProperty("user.dir");
+        try {
+            for(int i = 0; i < tilePaths.length; i++) {
+                tile[i] = new Tile();
+                System.out.println(i);
+                tile[i].image = ImageIO.read(new File(current + tilePaths[i]));;
+            }
+            // for(int i = 0; i < tile.length; i++) {
+            //     tile[i] = new Tile();
+            //     tile[i].image = ImageIO.read(new File(tilePaths[i]));
+            // }
+        } catch (Exception e) {
+            System.out.println("");
+            e.printStackTrace();
+            // System.out.println(e.getStackTrace());
+            // TODO: handle exception
+        }
+    }
+
+    public void loadMap(int number) {
+        try {
+            String current = System.getProperty("user.dir");
+            System.out.println("My current is: " + current);
+            File file = new File(current + "/tile/levels/level" + number + ".txt");
+            // InputStream is = new FileInputStream(new File(current + "tile/levels/level" + number + ".txt"));
+            // BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            Scanner scan = new Scanner(file);
+
+            int col = 0;
+            int row = 0;
+
+            while(col < gp.maxScreenCol && row < gp.maxScreenRow && scan.hasNextLine()) {
+                String line = scan.nextLine();
+                System.out.println(line +"\n");
+
+                while(col < gp.maxScreenCol) {
+                    String numbers[] = line.split(" ");
+                    int num = Integer.parseInt(numbers[col]);
+                    mapTileNum[row][col] = num;
+                    col++;
+                }
+                if(col == gp.maxScreenCol) {
+                    row++;
+                    col = 0;
+                }
+            }
+
+            scan.close();
+            System.out.println(mapTileNum);
+        } catch (Exception e) {
+            e.printStackTrace();
+            // TODO: handle exception
         }
     }
 }
