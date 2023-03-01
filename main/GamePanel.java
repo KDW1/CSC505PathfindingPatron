@@ -29,8 +29,8 @@ public class GamePanel extends JPanel implements Runnable {
     final int scale = 3;
 
     public final int tileSize = originalTileSize * scale; //Product of scaling the tile thing
-    public final int maxScreenCol = 16;
-    public final int maxScreenRow = 12;
+    public final int maxScreenCol = 20;
+    public final int maxScreenRow = 16;
     
     final int screenHeight = maxScreenRow * tileSize;
     final int screenWidth = maxScreenCol * tileSize;
@@ -154,11 +154,13 @@ public class GamePanel extends JPanel implements Runnable {
             g2.fillRect(c.position[1] * tileSize, c.position[0] * tileSize, tileSize, tileSize); 
             //Columns represent x values while rows are y values
         }
+
+        //Player Code
         g2.setColor(Color.white);
         g2.fillOval(playerX, playerY, tileSize, tileSize); 
+
+        //Clears screen for g2.dispose
         g2.dispose();
-        // System.out.println("First tile collides: " + tileM.tile[0].collision);
-        // System.out.println("Tile Size: " + tileM.gp.tileSize);
     }
 
 }

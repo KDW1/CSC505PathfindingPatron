@@ -21,7 +21,7 @@ public class TileManager {
         "/tiles/stone.png"
     };
     public int[][] mapTileNum;
-    public int currentNum = 0;
+    public int currentNum = 4;
     ArrayList<Coordinate> path;
 
     public TileManager(GamePanel gp) {

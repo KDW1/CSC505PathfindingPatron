@@ -1,5 +1,6 @@
 <project default="compile">
     <target name="compile">
+    <!--Dir = folder-->
         <mkdir dir="bin"/>
         <javac srcdir="pathfinding" destdir="bin"/>
         <javac srcdir="tile" destdir="bin"/>
